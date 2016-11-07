@@ -1,9 +1,4 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-
-} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-}
 /**
  *
  */
@@ -11,15 +6,21 @@ class Request
 {
     public function isPost()
     {
+        /*if (($_SERVER['REQUEST_METHOD'] == 'POST')) {
+        return true;
+        } else {
+        return false;
+        }*/
+
         return $_SERVER['REQUEST_METHOD'] == 'POST' ? true : false;
     }
 
-    function isGet()
+    public function isGet()
     {
         return $_SERVER['REQUEST_METHOD'] == 'GET' ? true : false;
     }
 
-    function input($key = null)
+    public function input($key = null)
     {
         if ($this->isPost()) {
             // if post
@@ -45,8 +46,13 @@ class Request
     }
 }
 
-$request = new Request();
+// $request = new Request();
+// $password = $request->input('password');
+// $confirmation_password = $request->input('confirmation_password');
+// $username = $request->input('username');
+// $email = $request->input('email');
 
-echo '<pre>';
-var_dump($request->input());
-echo '</pre>';
+// // regisration
+// echo '<pre>';
+// var_dump($request->input());
+// echo '</pre>';
