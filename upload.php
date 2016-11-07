@@ -15,7 +15,7 @@ class Upload
     private $target_file;
     private $file;
     private $formats = '*';
-    private $sizeLimit = 500000;
+    private $sizeLimit = 500000; //500KB
 
     public function handle($file)
     {
