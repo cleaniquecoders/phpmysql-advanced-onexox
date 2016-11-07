@@ -16,6 +16,7 @@ class Upload
     private $file;
     private $formats = '*';
     private $sizeLimit = 500000; //500KB
+    private $errors = [];
 
     public function handle($file)
     {
@@ -33,8 +34,9 @@ class Upload
     private function checkFileExist()
     {
         if (file_exists($this->target_file)) {
-            echo 'file already exist';
-            exit();
+            $this->errors[] = 'File already exist';
+            // echo 'file already exist';
+            // exit();
         }
         return $this;
     }
@@ -46,8 +48,9 @@ class Upload
         if ($this->formats != '*'
             && is_array($this->formats)
             && !in_array($fileType, $this->formats)) {
-            echo "Sorry, only " . implode(', ', $this->formats) . " files are allowed.";
-            exit();
+            //echo "Sorry, only " . implode(', ', $this->formats) . " files are allowed.";
+            //exit();
+            $this->errors[] = "Sorry, only " . implode(', ', $this->formats) . " files are allowed.";
         }
         return $this;
     }
@@ -56,15 +59,18 @@ class Upload
     {
         // Check file size
         if ($this->file["size"] > $this->sizeLimit) {
-            echo "Sorry, your file is too large.";
-            exit();
+            // echo "Sorry, your file is too large.";
+            // exit();
+            $this->errors[] = "Sorry, your file is too large.";
         }
         return $this;
     }
 
     private function move()
     {
-        move_uploaded_file($this->file["tmp_name"], $this->target_file);
+        if ($this->isError()) {
+            move_uploaded_file($this->file["tmp_name"], $this->target_file);
+        }
     }
 
     public function setFormat($list = [])
@@ -79,10 +85,20 @@ class Upload
         $this->sizeLimit = $value;
     }
 
+    public function isError()
+    {
+        return empty($this->errors) ? false : true;
+    }
+
+    public function getErrors()
+    {
+        return $this->errors;
+    }
 }
 
+$upload = new Upload();
+
 if ($request->isPost()) {
-    $upload = new Upload();
     $upload->setSizeLimit(100000000);
     $upload->setFormat(['pdf', 'docx', 'xls']);
     $file = $_FILES['fileToUpload'];
@@ -123,8 +139,18 @@ if ($request->isPost()) {
       <h1>Upload Class</h1>
       <form class="form-horizontal" method="post" enctype="multipart/form-data">
           Select image to upload:
-          <input class="form-control" type="file" name="fileToUpload" id="fileToUpload">
+          <input class="form-control <?php echo (!empty($upload->isError())) ? 'danger' : ''; ?>" type="file" name="fileToUpload" id="fileToUpload">
           <input class="btn btn-success" type="submit" value="Upload Image" name="submit">
+          <?php if (!empty($upload->isError())): ?>
+            <hr>
+            <div class="alert alert-danger">
+              <ul>
+                <?php foreach ($upload->getErrors() as $key => $value): ?>
+                  <li><?php echo $value; ?></li>
+                <?php endforeach;?>
+              </ul>
+            </div>
+          <?php endif;?>
       </form>
     </div>
   </body>
