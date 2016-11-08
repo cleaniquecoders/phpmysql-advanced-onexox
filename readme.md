@@ -27,6 +27,30 @@ class Request
 }
 ```
 
+## How to create a public method
+
+```php
+class Request
+{
+	public function methodName()
+	{
+
+	}
+}
+```
+
+## How to create a private method
+
+```php
+class Request
+{
+	private function methodName()
+	{
+
+	}
+}
+```
+
 ## Using Procedural, Object and Static
 
 ```php
