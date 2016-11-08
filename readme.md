@@ -51,6 +51,41 @@ class Request
 }
 ```
 
+## How to access to properties from within the class's method
+
+```php
+class Request
+{
+	private $data;
+
+	public function getData()
+	{
+		return $this->data;
+	}
+}
+```
+
+## How to create a static method and how to use it
+
+```php
+class Request
+{
+	public static function isPost()
+	{
+		return $_SERVER['REQUEST_METHOD'] == 'POST' ? true : false;
+	}
+}
+```
+
+Usage
+
+```php
+if(Request::isPost())
+{
+	// do something
+}
+```
+
 ## Using Procedural, Object and Static
 
 ```php
