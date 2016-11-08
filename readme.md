@@ -191,6 +191,7 @@ echo '<hr>';
 $semid = new SemiD();
 $semid->setColor(['white', 'red', 'green', 'blue']);
 echo $semid->getColor();
+```
 
 ## How to create trait and use it
 
