@@ -89,8 +89,6 @@ if(Request::isPost())
 ## How to create chaining method
 
 ```php
-<?php
-
 class Upload
 {
     public function handle($file)
