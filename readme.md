@@ -86,6 +86,47 @@ if(Request::isPost())
 }
 ```
 
+## How to create chaining method
+
+```php
+<?php
+
+class Upload
+{
+    public function handle($file)
+    {
+        // using the chaining method
+        $this->checkFileExist()
+            ->checkFormat()
+            ->checkFileSize()
+            ->move();
+    }
+
+    private function checkFileExist()
+    {
+        // logic to check file existence
+        return $this;
+    }
+
+    private function checkFormat()
+    {
+        // check if the right format used
+        return $this;
+    }
+
+    private function checkFileSize()
+    {
+        // Check file size
+        return $this;
+    }
+
+    private function move()
+    {
+        // move the uploaded file
+    }
+}
+```
+
 ## Using Procedural, Object and Static
 
 ```php
