@@ -145,3 +145,47 @@ if(Request::isPost()) {
     // save data...
 }
 ```
+
+## How to create trait and use it
+
+```php
+trait ErrorHandler
+{
+    private $errors = [];
+    public function isError()
+    {
+        return empty($this->errors) ? false : true;
+    }
+
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    public function setError($message)
+    {
+        $this->errors[] = $message;
+    }
+
+    public function clear()
+    {
+        $this->errors = [];
+    }
+}
+```
+
+Usage
+
+```php
+class User
+{
+    use ErrorHandler;
+}
+```
+
+```php
+class Post
+{
+    use ErrorHandler;
+}
+```
