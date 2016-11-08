@@ -2,12 +2,13 @@
 
 class Upload
 {
+    use ErrorHandler;
+
     private $target_dir = 'target/uploads/';
     private $target_file;
     private $file;
     private $formats = '*';
     private $sizeLimit = 500000; //500KB
-    private $errors = [];
 
     public function handle($file)
     {
@@ -25,9 +26,7 @@ class Upload
     private function checkFileExist()
     {
         if (file_exists($this->target_file)) {
-            $this->errors[] = 'File already exist';
-            // echo 'file already exist';
-            // exit();
+            $this->setError('File already exist');
         }
         return $this;
     }
@@ -39,9 +38,7 @@ class Upload
         if ($this->formats != '*'
             && is_array($this->formats)
             && !in_array($fileType, $this->formats)) {
-            //echo "Sorry, only " . implode(', ', $this->formats) . " files are allowed.";
-            //exit();
-            $this->errors[] = "Sorry, only " . implode(', ', $this->formats) . " files are allowed.";
+            $this->setError("Sorry, only " . implode(', ', $this->formats) . " files are allowed.");
         }
         return $this;
     }
@@ -50,9 +47,7 @@ class Upload
     {
         // Check file size
         if ($this->file["size"] > $this->sizeLimit) {
-            // echo "Sorry, your file is too large.";
-            // exit();
-            $this->errors[] = "Sorry, your file is too large.";
+            $this->setError("Sorry, your file is too large.");
         }
         return $this;
     }
@@ -76,16 +71,6 @@ class Upload
     {
         $this->sizeLimit = $value;
         return $this;
-    }
-
-    public function isError()
-    {
-        return empty($this->errors) ? false : true;
-    }
-
-    public function getErrors()
-    {
-        return $this->errors;
     }
 
     public function setTargetDirectory($path)

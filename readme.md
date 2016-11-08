@@ -191,4 +191,47 @@ echo '<hr>';
 $semid = new SemiD();
 $semid->setColor(['white', 'red', 'green', 'blue']);
 echo $semid->getColor();
+
+## How to create trait and use it
+
+```php
+trait ErrorHandler
+{
+    private $errors = [];
+    public function isError()
+    {
+        return empty($this->errors) ? false : true;
+    }
+
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    public function setError($message)
+    {
+        $this->errors[] = $message;
+    }
+
+    public function clear()
+    {
+        $this->errors = [];
+    }
+}
+```
+
+Usage
+
+```php
+class User
+{
+    use ErrorHandler;
+}
+```
+
+```php
+class Post
+{
+    use ErrorHandler;
+}
 ```
